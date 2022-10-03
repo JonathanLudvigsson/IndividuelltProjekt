@@ -72,11 +72,20 @@ namespace IndividuelltProjekt
             do
             {
                 wrongInput = 0;
+                int functionChoice = 0;
                 Console.WriteLine("1. Se dina konton och saldo");
                 Console.WriteLine("2. Överföring mellan konton");
                 Console.WriteLine("3. Ta ut pengar");
                 Console.WriteLine("4. Logga ut");
-                int functionChoice = Int32.Parse(Console.ReadLine());
+                try
+                {
+                    functionChoice = Int32.Parse(Console.ReadLine());
+                }
+                catch
+                {
+
+                }
+
                 switch (functionChoice)
                 {
                     case 1:
@@ -98,7 +107,6 @@ namespace IndividuelltProjekt
                         break;
                 }
             } while (wrongInput == 1);
-            return;
         }
     }
 }
