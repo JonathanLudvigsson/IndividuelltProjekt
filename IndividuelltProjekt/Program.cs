@@ -85,15 +85,17 @@ namespace IndividuelltProjekt
             {
                 {"DR4g0NslAy3r", "1. Sparkonto", "5000,00"},
                 {"DR4g0NslAy3r", "2. Spenderingskonto", "2500,00"},
-                { "Super", "1. Sparkonto", "5000,00" },
-                { "Super", "2. Spenderingskonto", "2500,00" },
-                { "Super", "3. Hemkonto", "4700,47" },
-                { "1337", "1. Sparkonto", "5000,00" },
-                { "1337", "2. Spenderingskonto", "2500,00" },
-                { "TestKonto", "1. Sparkonto", "5000,00" },
-                { "TestKonto", "2. Spenderingskonto", "2500,00" },
-                { "Iron", "1. Sparkonto", "5000,00" },
-                { "Iron", "2. Spenderingskonto", "2500,00" }
+                { "Super", "1. Sparkonto", "2350,24" },
+                { "Super", "2. Xyzkonto", "100,09" },
+                { "Super", "3. Bortakonto", "4700,47" },
+                { "1337", "1. MittKonto", "10,01" },
+                { "TestKonto", "1. Sparkonto", "3213,3324" },
+                { "TestKonto", "2. Spenderingskonto", "1000,00" },
+                { "Iron", "1. Sparkonto", "1000,00" },
+                { "Iron", "2. Spenderingskonto", "2000,00" },
+                { "Iron", "3. Pengarkonto", "3000,01" },
+                { "Iron", "4. Programmeringskonto", "35000,02" },
+                { "Iron", "5. Kaffekonto", "3721900,93" }
                 };
         }
         static void ViewAccounts(string userName, string[,] bankAccounts)
@@ -109,6 +111,7 @@ namespace IndividuelltProjekt
                     Console.WriteLine();
                 }
             }
+            Console.WriteLine();
         }
         static void TransferMoney(string userName, string[,] bankAccounts)
         {
@@ -149,7 +152,7 @@ namespace IndividuelltProjekt
                     Console.Clear();
                 }
 
-                if (account1 > numberOfAccounts)
+                if (account1 > numberOfAccounts || account1 < 0)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -211,7 +214,7 @@ namespace IndividuelltProjekt
                         ReadKeyMethod();
                         Console.Clear();
                     }
-                    if (account2 > numberOfAccounts)
+                    if (account2 > numberOfAccounts || account2 < 0)
                     {
                         wrongAmount = 1;
                         Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -279,7 +282,7 @@ namespace IndividuelltProjekt
                     Console.Clear();
                 }
 
-                if (account > numberOfAccounts)
+                if (account > numberOfAccounts || account < 0)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -379,6 +382,8 @@ namespace IndividuelltProjekt
                     default:
                         Console.WriteLine("Ogiltigt val. Skriv in ett värde mellan 1 och 4");
                         wrongInput = 1;
+                        ReadKeyMethod();
+                        Console.Clear();
                         break;
                 }
             } while (wrongInput == 1);
