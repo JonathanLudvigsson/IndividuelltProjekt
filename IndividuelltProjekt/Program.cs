@@ -6,7 +6,6 @@ namespace IndividuelltProjekt
     {
         static void Main(string[] args)
         {
-
             UserLogin(out string userName);
             GetUserAccounts(out string[,] bankAccounts);
             while (true)
