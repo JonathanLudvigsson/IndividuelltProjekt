@@ -8,25 +8,24 @@ namespace IndividuelltProjekt
         {
 
             UserLogin(out string userName);
-            GetUserAccounts(userName, out string[,] bankAccounts);
+            GetUserAccounts(out string[,] bankAccounts);
             while (true)
             {
                 switch (FunctionChoice(userName))
                 {
                     case 1:
                         Console.Clear();
-                        ViewAccounts(bankAccounts);
+                        ViewAccounts(userName, bankAccounts);
                         ReadKeyMethod();
                         break;
                     case 2: 
-                        TransferMoney(bankAccounts);
+                        TransferMoney(userName, bankAccounts);
                         break;
                     case 3: 
-                        WithdrawMoney(bankAccounts);
+                        WithdrawMoney(userName, bankAccounts);
                         break;
                     case 4: 
                         UserLogin(out userName);
-                        GetUserAccounts(userName, out bankAccounts);
                         break;
                 }
             }
@@ -80,59 +79,38 @@ namespace IndividuelltProjekt
             Console.WriteLine("Skriv nu in ditt lösenord");
             passWord = Console.ReadLine();
         }
-        static void GetUserAccounts(string userName, out string[,] bankAccounts)
+        static void GetUserAccounts(out string[,] bankAccounts)
         {
-            bankAccounts = new string[,] { };
-
-            switch (userName)
+            bankAccounts = new string[,]
             {
-                case "DR4g0NslAy3r": bankAccounts = new string[,]
-                {
-                    { "1. Sparkonto", "5000,00" },
-                    { "2. Spenderingskonto", "2500,00" }
+                {"Dr4g0NslAy3r", "1. Sparkonto", "5000,00"},
+                {"Dr4g0NslAy3r", "2. Spenderingskonto", "2500,00"},
+                { "Super", "1. Sparkonto", "5000,00" },
+                { "Super", "2. Spenderingskonto", "2500,00" },
+                { "Super", "3. Hemkonto", "4700,47" },
+                { "1337", "1. Sparkonto", "5000,00" },
+                { "1337", "2. Spenderingskonto", "2500,00" },
+                { "TestKonto", "1. Sparkonto", "5000,00" },
+                { "TestKonto", "2. Spenderingskonto", "2500,00" },
+                { "Iron", "1. Sparkonto", "5000,00" },
+                { "Iron", "2. Spenderingskonto", "2500,00" }
                 };
-                    break;
-                case "Super": bankAccounts = new string[,]
-                {
-                    { "1. Sparkonto", "5000,00" },
-                    { "2. Spenderingskonto", "2500,00" },
-                    { "3. Hemkonto", "4700,47" },
-                };
-                    break;
-                case "1337": bankAccounts = new string[,]
-                {
-                    { "1. Sparkonto", "5000,00" },
-                    { "2. Spenderingskonto", "2500,00" }
-                };
-                    break;
-                case "TestKonto": bankAccounts = new string[,]
-                {
-                    { "1. Sparkonto", "5000,00" },
-                    { "2. Spenderingskonto", "2500,00" }
-                };
-                    break;
-                case "Iron": bankAccounts = new string[,]
-                {
-                    { "1. Sparkonto", "5000,00" },
-                    { "2 Spenderingskonto", "2500,00" }
-                };
-                    break;
-            }
-
         }
-        static void ViewAccounts(string[,] bankAccounts)
+        static void ViewAccounts(string userName, string[,] bankAccounts)
         {
-            foreach (string accounts in bankAccounts)
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
             {
-                foreach (var item in accounts)
+                if (bankAccounts[i,0] == userName)
                 {
-                    Console.Write(item);
+                    for (int j = 1; j < 3; j++)
+                    {
+                        Console.Write(bankAccounts[i, j] + " ");
+                    }
+                    Console.WriteLine();
                 }
-                Console.WriteLine();
             }
-            Console.WriteLine();
         }
-        static void TransferMoney(string[,] bankAccounts)
+        static void TransferMoney(string userName, string[,] bankAccounts)
         {
             Console.Clear();
             int account1 = 0;
@@ -147,7 +125,7 @@ namespace IndividuelltProjekt
             do
             {
                 wrongAmount = 0;
-                ViewAccounts(bankAccounts);
+                ViewAccounts(userName, bankAccounts);
 
                 try
                 {
@@ -186,8 +164,16 @@ namespace IndividuelltProjekt
                     Console.Clear();
                 }
 
-                amountBefore1 = Decimal.Parse(bankAccounts[account1, 1]);
-                amountAfter1 = amountBefore1 - moneyAmount;
+                for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+                {
+                    if (bankAccounts[i, 0] == userName)
+                    {
+                        amountBefore1 = Decimal.Parse(bankAccounts[i + account1, 2]);
+                        amountAfter1 = amountBefore1 - moneyAmount;
+                        break;
+                    }
+                }
+
                 if (amountAfter1 < 0)
                 {
                     Console.WriteLine("Ditt konto har inte nog med pengar för att skicka över så mycket.");
@@ -215,19 +201,26 @@ namespace IndividuelltProjekt
 
             } while (wrongAmount == 1);
 
-            bankAccounts[account1, 1] = Convert.ToString(amountAfter1);
 
-            amountBefore2 = Decimal.Parse(bankAccounts[account2, 1]);
-            amountAfter2 = amountBefore2 + moneyAmount;
-            bankAccounts[account2, 1] = Convert.ToString(amountAfter2);
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+            {
+                if (bankAccounts[i, 0] == userName)
+                {
+                    bankAccounts[i + account1, 2] = Convert.ToString(amountAfter1);
+                    amountBefore2 = Decimal.Parse(bankAccounts[i + account2, 2]);
+                    amountAfter2 = amountBefore2 + moneyAmount;
+                    bankAccounts[i + account2, 2] = Convert.ToString(amountAfter2);
+                    break;
+                }
+            }
 
             Console.WriteLine();
 
-            ViewAccounts(bankAccounts);
+            ViewAccounts(userName, bankAccounts);
             ReadKeyMethod();
 
         }
-        static void WithdrawMoney(string[,] bankAccounts)
+        static void WithdrawMoney(string userName, string[,] bankAccounts)
         {
             Console.Clear();
             int account = 0;
@@ -240,7 +233,7 @@ namespace IndividuelltProjekt
             {
                 wrongAmount = 0;
 
-                ViewAccounts(bankAccounts);
+                ViewAccounts(userName, bankAccounts);
 
                 try
                 {
@@ -277,8 +270,16 @@ namespace IndividuelltProjekt
                         ReadKeyMethod();
                         Console.Clear();
                     }
-                    amountBefore = Convert.ToDecimal(bankAccounts[account, 1]);
-                    amountAfter = amountBefore - moneyAmount;
+
+                    for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+                    {
+                        if (bankAccounts[i, 0] == userName)
+                        {
+                            amountBefore = Decimal.Parse(bankAccounts[i + account, 2]);
+                            amountAfter = amountBefore - moneyAmount;
+                            break;
+                        }
+                    }
                     if (amountAfter < 0)
                     {
                         Console.WriteLine("Du har inte tillräckligt med pengar för att ta ut så mycket");
@@ -290,11 +291,18 @@ namespace IndividuelltProjekt
 
             } while (wrongAmount == 1);
 
-            bankAccounts[account, 1] = Convert.ToString(amountAfter);
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+            {
+                if (bankAccounts[i, 0] == userName)
+                {
+                    bankAccounts[i + account, 2] = Convert.ToString(amountAfter);
+                    break;
+                }
+            }
 
             Console.WriteLine();
 
-            ViewAccounts(bankAccounts);
+            ViewAccounts(userName, bankAccounts);
             ReadKeyMethod();
         }
         static int FunctionChoice(string userName)
