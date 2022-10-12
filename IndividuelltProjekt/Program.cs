@@ -121,7 +121,7 @@ namespace IndividuelltProjekt
             decimal amountBefore2 = 0;
             decimal amountAfter2 = 0;
             int wrongAmount = 0;
-            int numberOfAccounts = 0;
+            int numberOfAccounts = -1;
 
             for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
             {
@@ -171,32 +171,30 @@ namespace IndividuelltProjekt
                         ReadKeyMethod();
                         Console.Clear();
                     }
-                }
-
-                if (moneyAmount < 0)
-                {
-                    Console.WriteLine("Du kan inte skicka över en negativ mängd pengar");
-                    wrongAmount = 1;
-                    ReadKeyMethod();
-                    Console.Clear();
-                }
-
-                for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
-                {
-                    if (bankAccounts[i, 0] == userName)
+                    if (moneyAmount < 0)
                     {
-                        amountBefore1 = Decimal.Parse(bankAccounts[i + account1, 2]);
-                        amountAfter1 = amountBefore1 - moneyAmount;
-                        break;
+                        Console.WriteLine("Du kan inte skicka över en negativ mängd pengar");
+                        wrongAmount = 1;
+                        ReadKeyMethod();
+                        Console.Clear();
                     }
-                }
 
-                if (amountAfter1 < 0)
-                {
-                    Console.WriteLine("Ditt konto har inte nog med pengar för att skicka över så mycket.");
-                    wrongAmount = 1;
-                    ReadKeyMethod();
-                    Console.Clear();
+                    for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+                    {
+                        if (bankAccounts[i, 0] == userName)
+                        {
+                            amountBefore1 = Decimal.Parse(bankAccounts[i + account1, 2]);
+                            amountAfter1 = amountBefore1 - moneyAmount;
+                            break;
+                        }
+                    }
+                    if (amountAfter1 < 0)
+                    {
+                        Console.WriteLine("Ditt konto har inte nog med pengar för att skicka över så mycket.");
+                        wrongAmount = 1;
+                        ReadKeyMethod();
+                        Console.Clear();
+                    }
                 }
 
                 if (wrongAmount != 1)
@@ -252,7 +250,7 @@ namespace IndividuelltProjekt
             int wrongAmount = 0;
             decimal amountAfter = 0;
             decimal amountBefore = 0;
-            int numberOfAccounts = 0;
+            int numberOfAccounts = -1;
 
             for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
             {
