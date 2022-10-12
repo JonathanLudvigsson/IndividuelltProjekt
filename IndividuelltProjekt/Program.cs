@@ -83,8 +83,8 @@ namespace IndividuelltProjekt
         {
             bankAccounts = new string[,]
             {
-                {"Dr4g0NslAy3r", "1. Sparkonto", "5000,00"},
-                {"Dr4g0NslAy3r", "2. Spenderingskonto", "2500,00"},
+                {"DR4g0NslAy3r", "1. Sparkonto", "5000,00"},
+                {"DR4g0NslAy3r", "2. Spenderingskonto", "2500,00"},
                 { "Super", "1. Sparkonto", "5000,00" },
                 { "Super", "2. Spenderingskonto", "2500,00" },
                 { "Super", "3. Hemkonto", "4700,47" },
@@ -121,6 +121,15 @@ namespace IndividuelltProjekt
             decimal amountBefore2 = 0;
             decimal amountAfter2 = 0;
             int wrongAmount = 0;
+            int numberOfAccounts = 0;
+
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+            {
+                if (bankAccounts[i, 0] == userName)
+                {
+                    numberOfAccounts++;
+                }
+            }
 
             do
             {
@@ -133,6 +142,14 @@ namespace IndividuelltProjekt
                     account1 = Int32.Parse(Console.ReadLine()) - 1;
                 }
                 catch
+                {
+                    wrongAmount = 1;
+                    Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
+                    ReadKeyMethod();
+                    Console.Clear();
+                }
+
+                if (account1 > numberOfAccounts)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -196,6 +213,13 @@ namespace IndividuelltProjekt
                         ReadKeyMethod();
                         Console.Clear();
                     }
+                    if (account2 > numberOfAccounts)
+                    {
+                        wrongAmount = 1;
+                        Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
+                        ReadKeyMethod();
+                        Console.Clear();
+                    }
 
                 }
 
@@ -228,6 +252,15 @@ namespace IndividuelltProjekt
             int wrongAmount = 0;
             decimal amountAfter = 0;
             decimal amountBefore = 0;
+            int numberOfAccounts = 0;
+
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+            {
+                if (bankAccounts[i, 0] == userName)
+                {
+                    numberOfAccounts++;
+                }
+            }
 
             do
             {
@@ -241,6 +274,14 @@ namespace IndividuelltProjekt
                     account = Int32.Parse(Console.ReadLine()) - 1;
                 }
                 catch
+                {
+                    wrongAmount = 1;
+                    Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
+                    ReadKeyMethod();
+                    Console.Clear();
+                }
+
+                if (account > numberOfAccounts)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
