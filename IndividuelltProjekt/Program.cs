@@ -6,7 +6,7 @@ namespace IndividuelltProjekt
     {
         static void Main(string[] args)
         {
-            UserLogin(out string userName);
+            UserLogin(out string userName, out string passWord);
             GetUserAccounts(out string[,] bankAccounts);
             while (true)
             {
@@ -21,10 +21,10 @@ namespace IndividuelltProjekt
                         TransferMoney(userName, bankAccounts);
                         break;
                     case 3: 
-                        WithdrawMoney(userName, bankAccounts);
+                        WithdrawMoney(userName, passWord, bankAccounts);
                         break;
                     case 4: 
-                        UserLogin(out userName);
+                        UserLogin(out userName, out passWord);
                         break;
 
                 }
@@ -32,7 +32,7 @@ namespace IndividuelltProjekt
 
         }
 
-        static void UserLogin(out string userName)
+        static void UserLogin(out string userName, out string passWord)
         {
             string[,] usersArray = new string[5, 2]
             {
@@ -43,6 +43,7 @@ namespace IndividuelltProjekt
                 { "Iron", "C123" }
             };
             userName = "";
+            passWord = "";
 
             Console.Clear();
             Console.WriteLine("Välkommen till SUT22 banken!");
@@ -50,7 +51,7 @@ namespace IndividuelltProjekt
             int logInTries = 0;
             while (logInTries < 3)
             {
-                GetLogInFromUser(out userName, out string passWord);
+                GetLogInFromUser(out userName, out passWord);
 
                 for (int userNameIndex = 0; userNameIndex < 5; userNameIndex++)
                 {
@@ -113,6 +114,17 @@ namespace IndividuelltProjekt
             }
             Console.WriteLine();
         }
+        static void GetNumberOfAccounts(string userName, string[,] bankAccounts, out int numberOfAccounts)
+        {
+            numberOfAccounts = -1;
+            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
+            {
+                if (bankAccounts[i, 0] == userName)
+                {
+                    numberOfAccounts++;
+                }
+            }
+        }
         static void TransferMoney(string userName, string[,] bankAccounts)
         {
             Console.Clear();
@@ -124,15 +136,8 @@ namespace IndividuelltProjekt
             decimal amountBefore2 = 0;
             decimal amountAfter2 = 0;
             int wrongAmount = 0;
-            int numberOfAccounts = -1;
 
-            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
-            {
-                if (bankAccounts[i, 0] == userName)
-                {
-                    numberOfAccounts++;
-                }
-            }
+            GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
             do
             {
@@ -147,12 +152,9 @@ namespace IndividuelltProjekt
                 catch
                 {
                     wrongAmount = 1;
-                    Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
-                    ReadKeyMethod();
-                    Console.Clear();
                 }
 
-                if (account1 > numberOfAccounts || account1 < 0)
+                if (account1 > numberOfAccounts || account1 < 0 || wrongAmount == 1)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -210,11 +212,8 @@ namespace IndividuelltProjekt
                     catch
                     {
                         wrongAmount = 1;
-                        Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
-                        ReadKeyMethod();
-                        Console.Clear();
                     }
-                    if (account2 > numberOfAccounts || account2 < 0)
+                    if (account2 > numberOfAccounts || account2 < 0 || wrongAmount == 1)
                     {
                         wrongAmount = 1;
                         Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -245,7 +244,7 @@ namespace IndividuelltProjekt
             ReadKeyMethod();
 
         }
-        static void WithdrawMoney(string userName, string[,] bankAccounts)
+        static void WithdrawMoney(string userName, string passWord, string[,] bankAccounts)
         {
             Console.Clear();
             int account = 0;
@@ -253,15 +252,8 @@ namespace IndividuelltProjekt
             int wrongAmount = 0;
             decimal amountAfter = 0;
             decimal amountBefore = 0;
-            int numberOfAccounts = -1;
 
-            for (int i = 0; i <= bankAccounts.GetUpperBound(0); i++)
-            {
-                if (bankAccounts[i, 0] == userName)
-                {
-                    numberOfAccounts++;
-                }
-            }
+            GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
             do
             {
@@ -328,6 +320,17 @@ namespace IndividuelltProjekt
                         wrongAmount = 1;
                         ReadKeyMethod();
                         Console.Clear();
+                    }
+
+                    Console.WriteLine("Var vänlig skriv in ditt lösenord för att bekräfta att du vill ta ut pengar");
+                    string uPassWord = Console.ReadLine();
+                    if (uPassWord != passWord)
+                    {
+                        Console.WriteLine("Du skrev in fel lösenord");
+                        wrongAmount = 1;
+                        ReadKeyMethod();
+                        Console.Clear();
+
                     }
                 }
 
