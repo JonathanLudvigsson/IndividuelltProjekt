@@ -127,7 +127,6 @@ namespace IndividuelltProjekt
         }
         static void TransferMoney(string userName, string[,] bankAccounts)
         {
-            Console.Clear();
             int account1 = 0;
             decimal moneyAmount = 0;
             int account2 = 0;
@@ -136,6 +135,7 @@ namespace IndividuelltProjekt
             decimal amountBefore2 = 0;
             decimal amountAfter2 = 0;
             int wrongAmount = 0;
+            Console.Clear();
 
             GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
@@ -172,7 +172,8 @@ namespace IndividuelltProjekt
                     catch
                     {
                         wrongAmount = 1;
-                        Console.WriteLine("Skriv in ett heltal");
+                        moneyAmount = 0;
+                        Console.WriteLine("Skriv in ett nummer");
                         ReadKeyMethod();
                         Console.Clear();
                     }
@@ -246,12 +247,12 @@ namespace IndividuelltProjekt
         }
         static void WithdrawMoney(string userName, string passWord, string[,] bankAccounts)
         {
-            Console.Clear();
             int account = 0;
             decimal moneyAmount = 0;
             int wrongAmount = 0;
             decimal amountAfter = 0;
             decimal amountBefore = 0;
+            Console.Clear();
 
             GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
@@ -269,12 +270,10 @@ namespace IndividuelltProjekt
                 catch
                 {
                     wrongAmount = 1;
-                    Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
-                    ReadKeyMethod();
-                    Console.Clear();
+
                 }
 
-                if (account > numberOfAccounts || account < 0)
+                if (account > numberOfAccounts || account < 0 || wrongAmount == 1)
                 {
                     wrongAmount = 1;
                     Console.WriteLine("Det där är inte ett giltigt val, skriv in en siffra som motsvarar ett av bankkonton");
@@ -292,7 +291,8 @@ namespace IndividuelltProjekt
                     catch
                     {
                         wrongAmount = 1;
-                        Console.WriteLine("Skriv in ett heltal");
+                        moneyAmount = 0;
+                        Console.WriteLine("Skriv in ett nummer");
                         ReadKeyMethod();
                         Console.Clear();
                     }
@@ -322,16 +322,19 @@ namespace IndividuelltProjekt
                         Console.Clear();
                     }
 
-                    Console.WriteLine("Var vänlig skriv in ditt lösenord för att bekräfta att du vill ta ut pengar");
-                    string uPassWord = Console.ReadLine();
-                    if (uPassWord != passWord)
+                    if (wrongAmount != 1)
                     {
-                        Console.WriteLine("Du skrev in fel lösenord");
-                        wrongAmount = 1;
-                        ReadKeyMethod();
-                        Console.Clear();
-
+                        Console.WriteLine("Var vänlig skriv in ditt lösenord för att bekräfta att du vill ta ut pengar");
+                        string uPassWord = Console.ReadLine();
+                        if (uPassWord != passWord)
+                        {
+                            Console.WriteLine("Du skrev in fel lösenord");
+                            wrongAmount = 1;
+                            ReadKeyMethod();
+                            Console.Clear();
+                        }
                     }
+
                 }
 
             } while (wrongAmount == 1);
