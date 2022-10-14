@@ -7,7 +7,8 @@ namespace IndividuelltProjekt
         static void Main(string[] args)
         {
             UserLogin(out string userName, out string passWord);
-            GetUserAccounts(out string[,] bankAccounts);
+            GetBankAccounts(out string[,] bankAccounts);
+            GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
             while (true)
             {
                 switch (FunctionChoice(userName))
@@ -18,13 +19,14 @@ namespace IndividuelltProjekt
                         ReadKeyMethod();
                         break;
                     case 2: 
-                        TransferMoney(userName, bankAccounts);
+                        TransferMoney(userName, bankAccounts, numberOfAccounts);
                         break;
                     case 3: 
-                        WithdrawMoney(userName, passWord, bankAccounts);
+                        WithdrawMoney(userName, passWord, bankAccounts, numberOfAccounts);
                         break;
                     case 4: 
                         UserLogin(out userName, out passWord);
+                        GetNumberOfAccounts(userName, bankAccounts, out numberOfAccounts);
                         break;
 
                 }
@@ -34,7 +36,7 @@ namespace IndividuelltProjekt
 
         static void UserLogin(out string userName, out string passWord)
         {
-            string[,] usersArray = new string[5, 2]
+            string[,] usersArray = new string[,]
             {
                 { "DR4g0NslAy3r", "SUT22" },
                 { "Super", "12345" },
@@ -62,7 +64,7 @@ namespace IndividuelltProjekt
                 }
 
                 logInTries++;
-                if (logInTries < 3)
+                if (logInTries != 3)
                 {
                     Console.WriteLine($"Fel användarnamn eller lösenord. Du har {3 - logInTries} försök kvar.");
                 }
@@ -80,7 +82,7 @@ namespace IndividuelltProjekt
             Console.WriteLine("Skriv nu in ditt lösenord");
             passWord = Console.ReadLine();
         }
-        static void GetUserAccounts(out string[,] bankAccounts)
+        static void GetBankAccounts(out string[,] bankAccounts)
         {
             bankAccounts = new string[,]
             {
@@ -125,7 +127,7 @@ namespace IndividuelltProjekt
                 }
             }
         }
-        static void TransferMoney(string userName, string[,] bankAccounts)
+        static void TransferMoney(string userName, string[,] bankAccounts, int numberOfAccounts)
         {
             int account1 = 0;
             decimal moneyAmount = 0;
@@ -136,8 +138,6 @@ namespace IndividuelltProjekt
             decimal amountAfter2 = 0;
             int wrongAmount = 0;
             Console.Clear();
-
-            GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
             do
             {
@@ -172,14 +172,13 @@ namespace IndividuelltProjekt
                     catch
                     {
                         wrongAmount = 1;
-                        moneyAmount = 0;
                         Console.WriteLine("Skriv in ett nummer");
                         ReadKeyMethod();
                         Console.Clear();
                     }
-                    if (moneyAmount < 0)
+                    if (moneyAmount <= 0 && wrongAmount != 1)
                     {
-                        Console.WriteLine("Du kan inte skicka över en negativ mängd pengar");
+                        Console.WriteLine("Du måste skicka över någonting");
                         wrongAmount = 1;
                         ReadKeyMethod();
                         Console.Clear();
@@ -245,7 +244,7 @@ namespace IndividuelltProjekt
             ReadKeyMethod();
 
         }
-        static void WithdrawMoney(string userName, string passWord, string[,] bankAccounts)
+        static void WithdrawMoney(string userName, string passWord, string[,] bankAccounts, int numberOfAccounts)
         {
             int account = 0;
             decimal moneyAmount = 0;
@@ -253,8 +252,6 @@ namespace IndividuelltProjekt
             decimal amountAfter = 0;
             decimal amountBefore = 0;
             Console.Clear();
-
-            GetNumberOfAccounts(userName, bankAccounts, out int numberOfAccounts);
 
             do
             {
@@ -291,15 +288,14 @@ namespace IndividuelltProjekt
                     catch
                     {
                         wrongAmount = 1;
-                        moneyAmount = 0;
                         Console.WriteLine("Skriv in ett nummer");
                         ReadKeyMethod();
                         Console.Clear();
                     }
                     
-                    if (moneyAmount < 0)
+                    if (moneyAmount <= 0 && wrongAmount != 1)
                     {
-                        Console.WriteLine("Du kan inte ta ut en negativ mängd pengar");
+                        Console.WriteLine("Du måste skicka över någonting");
                         wrongAmount = 1;
                         ReadKeyMethod();
                         Console.Clear();
@@ -355,7 +351,7 @@ namespace IndividuelltProjekt
         }
         static int FunctionChoice(string userName)
         {
-            int wrongInput;
+            int wrongInput = 0;
             Console.Clear();
             Console.WriteLine($"Välkommen {userName} till SUT22 banken. Vad vill du göra?");
             do
@@ -366,14 +362,8 @@ namespace IndividuelltProjekt
                 Console.WriteLine("2. Överföring mellan konton");
                 Console.WriteLine("3. Ta ut pengar");
                 Console.WriteLine("4. Logga ut");
-                try
-                {
-                    functionChoice = Int32.Parse(Console.ReadLine());
-                }
-                catch
-                {
 
-                }
+                Int32.TryParse(Console.ReadLine(), out functionChoice);
 
                 switch (functionChoice)
                 {
