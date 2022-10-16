@@ -3,6 +3,8 @@ An online banking application as a project for school.
 
 User can log in to the bank, see the amount of money each of their bank accounts has, transfer money inbetween their bank accounts and withdraw money from their bank accounts.
 
+All methods in the program are either self-explanatory or is expanded upon through my comments in the code.
+
 The flow of the program is pretty simple. User gets asked to log in where they input a username and password, if they input the wrong username/password three times the program closes and they have to restart to try again. If the user succeeds in logging in we retrieve the array of all the bank accounts and an integer of how many bank accounts the current user has (with 1 having the value 0 to account for 0-index in the bank accounts array). After we have gotten these variables we begin an infinite loop and a method which asks the user to select which function of the program they want to access is run, with 1-4 being the accepted values. After efery method in this switch has finished the user will need to press the enter key to return and be able to select another function. If the user inputs 1 all of their bank accounts are printed to the console. If the user inputs 2, they can transfer money from one of their bank accounts to another. If the user inputs 3, they can withdraw money from one of their bank accounts after they have inputted their password again, which in reality just deletes money from the chosen bank account. If the user selects 4 then we run the log in method again and the current Username, Password and number of current user's bank accounts are updated.
 
 # Reflektion
